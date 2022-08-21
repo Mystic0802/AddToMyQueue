@@ -363,7 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Configs
-AddToMyQueue.Api/appsettings.json
-AddToMyQueue.Api/appsettings.Development.json
-AddToMyQueue.Web/appsettings.json
-AddToMyQueue.Web/appsettings.Development.json
+AddToMyQueue*/appsettings.json
+AddToMyQueue*/appsettings.Development.json
