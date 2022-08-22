@@ -1,5 +1,4 @@
-﻿using AddToMyQueue.HostClient.Models.Response;
-using AddToMyQueue.HostClient.Services;
+﻿using Newtonsoft.Json;
 
 namespace AddToMyQueue.HostClient
 {
@@ -11,10 +10,6 @@ namespace AddToMyQueue.HostClient
             Console.ReadKey();
             await RequestUserAuth();
 
-            Console.WriteLine("Press enter to request access...");
-            Console.ReadKey();
-            await RequestAccessToken();
-
             await Task.Delay(-1);
         }
 
@@ -23,21 +18,21 @@ namespace AddToMyQueue.HostClient
         /// </summary>
         private static async Task RequestUserAuth()
         {
-            var authService = new AuthService(new HttpClient(), "https://localhost:7268");
-            var response = await authService.GetAsync<UserAuthUrlResponse>("api/SpotifyService/RequestUserAuthUrl");
-            var url = response.payload?.Uri;
-            if (url == null || url == string.Empty)
+            var httpClient = new HttpClient() { BaseAddress = new Uri("https://localhost:7268") };
+            var endpointUrl = "api/SpotifyService/RequestUserAuthUrl";
+
+            var response = await httpClient.GetAsync(endpointUrl);
+            var obj = JsonConvert.DeserializeAnonymousType(await response.Content.ReadAsStringAsync(), new { Uri = "" });
+
+            var uri = obj?.Uri;
+            if (uri == null || uri == string.Empty)
                 return;
 
+            // Open browser for authentication...
             var psi = new System.Diagnostics.ProcessStartInfo();
             psi.UseShellExecute = true;
-            psi.FileName = url;
+            psi.FileName = uri;
             System.Diagnostics.Process.Start(psi);
-        }
-
-        private static async Task RequestAccessToken()
-        {
-
         }
     }
 }

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Folder Include="Models\Requests\" />
+    <Folder Include="Models\Response\" />
   </ItemGroup>
 
 </Project>

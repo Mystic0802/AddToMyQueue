@@ -1,5 +1,4 @@
-﻿using AddToMyQueue.Api.Models.Response;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace AddToMyQueue.Api.Controllers.SpotifyService
@@ -36,10 +35,8 @@ namespace AddToMyQueue.Api.Controllers.SpotifyService
             uri += _state != "" ? "&state=" + _state : "";
             uri += _scope != "" ? "&scope=" + _scope : "";
             uri += _showDialog ? "&show_dialog=" + _showDialog : "";
-            var reponse = new UriResponse()
-            { Uri = uri };
+            var reponse = new { Uri = uri };
             return JsonConvert.SerializeObject(reponse);
-
         }
     }
 }
