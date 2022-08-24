@@ -1,7 +1,13 @@
+using AddToMyQueue.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<AddToMyQueueContext>(
+    o => o.UseNpgsql(builder.Configuration.GetConnectionString("AddToMYQueueDb")));
 
 var app = builder.Build();
 

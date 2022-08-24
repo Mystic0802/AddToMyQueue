@@ -37,6 +37,11 @@ namespace AddToMyQueue.Web.Pages
             if (Error != null && Error != "")
                 _logger.LogError(Error);
 
+            await GetAndStoreAccessToken();
+        }
+
+        async Task GetAndStoreAccessToken()
+        {
             var client = new HttpClient();
 
             // Encode clientId + client secret
@@ -55,8 +60,5 @@ namespace AddToMyQueue.Web.Pages
             var access = JsonConvert.DeserializeObject<AccessTokenReponse>(responseContent);
             _configuration.Bind("Spotify:AccessToken", access?.access_token);
         }
-
-        
-        
     }
 }
