@@ -1,5 +1,38 @@
-﻿@page "{userId}"
+﻿@page "{userId?}"
 @model AddToMyQueue.Web.Pages.ProfileModel
 @{
     ViewData["Title"] = "Profile - " + Model.Username;
 }
+
+<div class="row text-light">
+    <div class="col-sm-6">
+        <div id="UserCard" class="card text-center h-100">
+            <div class="card-body">
+                <img src="https://placekitten.com/200" class="card-img-top border border-2" style="border-radius: 50%; width: 30%;">
+                <h3 class="card-title parent">@Model.Username</h3>
+                <br />
+                <p class="card-text">
+                    I really like listening to music on spotify, Especially new music which you can add to my queue!
+                    This description might get quite long and the card should already be big enough to handle it.
+                </p>
+                <br />
+                <a href="#" class="btn btn-outline-secondary">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div id="SpotifyUser" class="card text-center h-100">
+            <div id="authenticateSpotifyCardBody" class="card-body" hidden>
+                <a class="btn btn-outline-secondary btn-outline-spotify border-0 shadow-none w-50" style="padding-top: 0.75em; padding-bottom: 0.75em; margin-top: 25%;">
+                    <div class="spinner-border spinner-border-sm visually-hidden" role="status"></div>
+                    <span class=""><b>Sign in with Spotify!</b></span>
+                </a>
+            </div>
+            <div id="SpotifyUserCardBody" class="card-body">
+                <label class="card-text">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</label>
+                <a href="#" class="btn btn-outline-success">Spotify something button :)</a>
+            </div>
+        </div>
+    </div>
+</div>
