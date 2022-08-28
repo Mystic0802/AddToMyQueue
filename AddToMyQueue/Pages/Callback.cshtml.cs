@@ -15,10 +15,10 @@ namespace AddToMyQueue.Web.Pages
         public string? ReceivedState { get; set; }
         public string? Error { get; set; }
 
-        public CallbackModel(IConfiguration configuration, ILogger logger)
+        public CallbackModel(IConfiguration configuration)
         {
             _configuration = configuration;
-            _logger = logger;
+            //_logger = logger;
         }
 
         public async void OnGet()

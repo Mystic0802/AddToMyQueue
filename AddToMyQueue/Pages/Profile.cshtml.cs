@@ -10,58 +10,62 @@ namespace AddToMyQueue.Web.Pages
     public class ProfileModel : PageModel
     {
         private readonly AddToMyQueueContext _context;
+        
+        public User? UserProfile { get; private set; }
+        public SpotifyAccount? SpotifyProfile { get; private set; }
 
-        public string Username { get; private set; }
+        public bool IsViewingOwnProfile { get; set; } = false;
 
         public ProfileModel(AddToMyQueueContext context)
         {
             _context = context;
         }
 
-        public void OnGet(string userId)
+        public void OnGet(string? userId)
         {
             // if no userID is entered in the URL, show users own profile
             if (userId == null || userId == string.Empty)
             {
                 // Check if logged in, use their userId if so. ask to sign in/up if not
-                userId = TryGetCurrentUserId() ?? "";
-
+                userId = GetLoggedInUserId();
                 if (userId == "")
                 {
                     Response.Redirect("/login");
                     return;
                 }
-                
-
+                IsViewingOwnProfile = true;
             }
-            
-            var userProfile = _context.Users.Where(u => u.UserId == userId).FirstOrDefault();
+            else if (userId == GetLoggedInUserId())
+            {
+                IsViewingOwnProfile = true;
+            }
 
-            if (userProfile == null)
+            UserProfile = _context.Users.Where(u => u.UserId == userId).FirstOrDefault();
+
+            if (UserProfile == null)
             {
                 // if no profile is found, show "profile not found" stuff
+
                 return;
             }
+            
 
-            Username = userProfile.Username;
-
-            DisplayProfileInfo(userProfile);
+            DisplayProfileInfo(UserProfile);
 
             var userSpotifyAccountId = _context.UserSpotifyAccounts.Where(a => a.UserId == userId).FirstOrDefault()?.SpotifyId;
             var userSpotifyAccount = _context.SpotifyAccounts.Where(a => a.SpotifyId == userSpotifyAccountId).FirstOrDefault();
 
-            if (userSpotifyAccount == null)
+            if (userSpotifyAccount == null )
             {
-                // if not spotify user found, show spotify auth stuff
                 return;
             }
 
             DisplaySpotifyAccount(userSpotifyAccount);
         }
 
-        private string? TryGetCurrentUserId()
+        private string GetLoggedInUserId()
         {
-            return null;
+            return "";
         }
 
         private void DisplayProfileInfo(User userProfile)
@@ -74,7 +78,7 @@ namespace AddToMyQueue.Web.Pages
             
         }
 
-        public void StartSpotifyAuthFlor()
+        public void StartSpotifyAuthFlow()
         {
 
         }
