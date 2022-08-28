@@ -8,8 +8,6 @@ namespace AddToMyQueue.Data.Models.Spotify
         [Required]
         public string SpotifyId { get; set; }
         [Required]
-        public string RefreshToken { get; set; }
-        [Required]
-        public DateTime TokenCreationTime { get; set; }
+        public string SpotifyUsername { get; set; }
     }
 }

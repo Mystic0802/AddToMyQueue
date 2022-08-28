@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AddToMyQueue.Api\AddToMyQueue.Api.csproj" />
     <ProjectReference Include="..\AddToMyQueue.Data\AddToMyQueue.Data.csproj" />
   </ItemGroup>
 

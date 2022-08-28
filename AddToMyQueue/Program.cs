@@ -1,3 +1,4 @@
+using AddToMyQueue.Api.Models;
 using AddToMyQueue.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,10 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<AddToMyQueueContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("AddToMYQueueDb")));
+
+builder.Services.AddSingleton<SpotifyClients>();
+
+builder.Services.AddSingleton<SpotifyApiData>();
 
 var app = builder.Build();
 

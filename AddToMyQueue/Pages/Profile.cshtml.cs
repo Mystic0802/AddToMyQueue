@@ -1,24 +1,25 @@
+using AddToMyQueue.Api.Models;
 using AddToMyQueue.Data;
 using AddToMyQueue.Data.Models;
 using AddToMyQueue.Data.Models.Spotify;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Reflection.Metadata.Ecma335;
 
 namespace AddToMyQueue.Web.Pages
 {
     public class ProfileModel : PageModel
     {
         private readonly AddToMyQueueContext _context;
-        
+        private readonly ILogger _logger;
+
         public User? UserProfile { get; private set; }
         public SpotifyAccount? SpotifyProfile { get; private set; }
 
-        public bool IsViewingOwnProfile { get; set; } = false;
+        public bool IsViewingOwnProfile { get; set; }
 
-        public ProfileModel(AddToMyQueueContext context)
+        public ProfileModel(AddToMyQueueContext context/*, ILogger logger*/)
         {
             _context = context;
+            //_logger = logger;
         }
 
         public void OnGet(string? userId)
@@ -30,37 +31,33 @@ namespace AddToMyQueue.Web.Pages
                 userId = GetLoggedInUserId();
                 if (userId == "")
                 {
-                    Response.Redirect("/login");
+                    // Temp code.
+                    Response.Redirect("/Profile/1");
+
+                    //Response.Redirect("/login");
                     return;
                 }
-                IsViewingOwnProfile = true;
             }
-            else if (userId == GetLoggedInUserId())
-            {
-                IsViewingOwnProfile = true;
-            }
+
+            IsViewingOwnProfile = userId == GetLoggedInUserId();
 
             UserProfile = _context.Users.Where(u => u.UserId == userId).FirstOrDefault();
 
             if (UserProfile == null)
             {
                 // if no profile is found, show "profile not found" stuff
-
                 return;
             }
-            
 
             DisplayProfileInfo(UserProfile);
 
             var userSpotifyAccountId = _context.UserSpotifyAccounts.Where(a => a.UserId == userId).FirstOrDefault()?.SpotifyId;
-            var userSpotifyAccount = _context.SpotifyAccounts.Where(a => a.SpotifyId == userSpotifyAccountId).FirstOrDefault();
+            var spotifyAccount = _context.SpotifyAccounts.Where(a => a.SpotifyId == userSpotifyAccountId).FirstOrDefault();
 
-            if (userSpotifyAccount == null )
-            {
+            if (spotifyAccount == null)
                 return;
-            }
 
-            DisplaySpotifyAccount(userSpotifyAccount);
+            DisplaySpotifyAccount(spotifyAccount);
         }
 
         private string GetLoggedInUserId()
@@ -75,12 +72,12 @@ namespace AddToMyQueue.Web.Pages
 
         private void DisplaySpotifyAccount(SpotifyAccount spotifyAccount)
         { 
-            
+
         }
 
         public void StartSpotifyAuthFlow()
         {
-
+            Response.Redirect("/Authenticate");
         }
     }
 }
