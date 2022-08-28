@@ -12,26 +12,31 @@ namespace AddToMyQueue.Web.Pages
         private readonly ILogger _logger;
 
         public string? Code { get; set; }
-        public string? State { get; set; }
+        public string? ReceivedState { get; set; }
         public string? Error { get; set; }
 
-        public CallbackModel(IConfiguration configuration, ILogger logger)
+        public CallbackModel(IConfiguration configuration)
         {
             _configuration = configuration;
-            _logger = logger;
+            //_logger = logger;
         }
 
         public async void OnGet()
         {
-            State = Request.Query["state"];
+            ReceivedState = Request.Query["state"];
             Code = Request.Query["code"];
             Error = Request.Query["error"];
 
-            Redirect("/index");
-            
+            Response.Redirect("/index");
+
+            var ExpectedState = _configuration["Spotify:Auth:State"];
+
             // Check state first to confirm response is from Spotify
-            if(State != _configuration["Spotify:Auth:State"])
+            if (ReceivedState != ExpectedState)
+            {
+                _logger.LogWarning($"State received is different. Received State: {ReceivedState}, Expected State: {ExpectedState}");
                 return;
+            }
 
             // Then check for any errors
             if (Error != null && Error != "")

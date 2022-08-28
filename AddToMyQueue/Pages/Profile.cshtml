@@ -1,5 +1,73 @@
-﻿@page "{userId}"
+﻿@page "{userId?}"
 @model AddToMyQueue.Web.Pages.ProfileModel
 @{
-    ViewData["Title"] = "Profile - " + Model.Username;
+    ViewData["Title"] = "Profile - " + Model.UserProfile?.Username;
 }
+
+<div class="row text-light mb-4">
+    <div class="col-sm-6">
+        <div id="UserCard" class="card text-center h-100">
+            <div class="card-body">
+                <img src="https://placekitten.com/200" class="card-img-top border border-2" style="border-radius: 50%; width: 30%;">
+                <h3 class="card-title">@Model.UserProfile?.Username</h3>
+
+                <br />
+
+                <p class="card-text">
+                    I really like listening to music on spotify, Especially new music which you can add to my queue!
+                    This description might get quite long and the card should already be big enough to handle it.
+                </p>
+
+                <br />
+
+                <a href="#" class="btn btn-outline-secondary ">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div id="SpotifyUser" class="card text-center h-100">
+
+            <!-- Signed in user visiting page -->
+            <div id="AuthenticateSpotifyCardBody" class="card-body" hidden="@(!Model.IsViewingOwnProfile)">
+                <a class="btn btn-outline-secondary btn-outline-spotify border-0 shadow-none w-50" style="padding-top: 0.75em; padding-bottom: 0.75em; margin-top: 25%;">
+                    <div class="spinner-border spinner-border-sm" role="status" hidden></div>
+                    <span><b>Sign in with Spotify!</b></span>
+                </a>
+            </div>
+
+            <!-- Other users visiting page -->
+
+            <!-- User signed in and has spotify profile showing -->
+            <div id="UserAuthedSpotifyCardBody" class="card-body" hidden="@(Model.IsViewingOwnProfile)">
+                <img src="https://placekitten.com/200" class="card-img-top border border-2" style="border-radius: 50%; width: 30%;">
+                <h3 class="card-title">@Model.UserProfile?.Username</h3>
+
+                <br />
+
+                <p class="card-text">
+                    I really like listening to music on spotify, Especially new music which you can add to my queue!
+                    This description might get quite long and the card should already be big enough to handle it.
+                </p>
+
+                <br />
+
+                <a href="#" class="btn btn-outline-success">Spotify something button :)</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row text-light">
+    <div class="col-xl">
+        <div class="card w-100 h-100" hidden="@(Model.SpotifyProfile != null)">
+            <div class="row">
+                <div class="col text-center">
+                    <h3 class="card-title">@Model.UserProfile?.Username</h3>
+                </div>
+                <div class="col text-center">
+                    <h3 class="card-title">@Model.UserProfile?.Username</h3>
+                    <input class="w-50"/><button>Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+﻿
+.child {
+    visibility: hidden;
+}
+
+.parent:hover .child {
+    visibility: visible;
+}
+
+.btn-outline-spotify {
+    border-color: #141414;
+    border-radius: 25px;
+    background-color: #1d8954;
+    color: #ffffff;
+}
