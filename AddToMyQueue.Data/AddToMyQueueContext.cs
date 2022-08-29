@@ -19,7 +19,11 @@ namespace AddToMyQueue.Data
         }
         
         public DbSet<User> Users { get; set; }
+
+        // Spotify
         public DbSet<SpotifyAccount> SpotifyAccounts { get; set; }
         public DbSet<UserSpotifyAccount> UserSpotifyAccounts { get; set; }
+        public DbSet<AddedSong> RecentAddedSongs { get; set; }
+        
     }
 }

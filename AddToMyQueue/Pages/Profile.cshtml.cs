@@ -72,7 +72,7 @@ namespace AddToMyQueue.Web.Pages
 
         private void DisplaySpotifyAccount(SpotifyAccount spotifyAccount)
         { 
-
+            
         }
 
         public void StartSpotifyAuthFlow()

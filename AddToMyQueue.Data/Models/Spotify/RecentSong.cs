@@ -2,13 +2,12 @@
 
 namespace AddToMyQueue.Data.Models.Spotify
 {
-    public class SpotifyAccount
+    public class AddedSong
     {
         [Key]
         [Required]
         public string SpotifyId { get; set; }
-        public string? SpotifyUsername { get; set; }
         [Required]
-        public string RefreshToken { get; set; }
+        public string SongUri { get; set; }
     }
 }

@@ -5,7 +5,7 @@ namespace AddToMyQueue.Api.Models
     public interface ISpotifyClients
     {
         void AddClient(string userId, SpotifyClient client);
-        SpotifyClient? GetClient(string userId);
+        SpotifyClient? TryGetClient(string userId);
         bool Contains(string userId);
         void RemoveClient(string userId);
     }
@@ -18,8 +18,9 @@ namespace AddToMyQueue.Api.Models
 
         public SpotifyClients(/*ILogger logger*/)
         {
-            _clients = new();
             //_logger = logger;
+
+            _clients = new();
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace AddToMyQueue.Api.Models
         /// </summary>
         /// <param name="userId"></param>
         /// <returns><see cref="SpotifyClient"/> if found; otherwise <see langword="Null"/></returns>
-        public SpotifyClient? GetClient(string userId)
+        public SpotifyClient? TryGetClient(string userId)
         {
             _clients.TryGetValue(userId, out SpotifyClient? client);
             return client;
@@ -55,7 +56,7 @@ namespace AddToMyQueue.Api.Models
         {
             _clients.Remove(userId);
             //if (!_clients.Remove(userId))
-                //_logger.LogWarning("Failed to remove {userId} from clients dictionary", userId);
+            //_logger.LogWarning("Failed to remove {userId} from clients dictionary", userId);
         }
     }
 }

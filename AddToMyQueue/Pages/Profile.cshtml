@@ -4,7 +4,7 @@
     ViewData["Title"] = "Profile - " + Model.UserProfile?.Username;
 }
 
-<div class="row text-light mb-4">
+<div class="row text-light mb-4 h-100">
     <div class="col-sm-6">
         <div id="UserCard" class="card text-center h-100">
             <div class="card-body">
@@ -27,7 +27,7 @@
     <div class="col-sm-6">
         <div id="SpotifyUser" class="card text-center h-100">
 
-            <!-- Signed in user visiting page -->
+            @* Signed in user visiting page *@
             <div id="AuthenticateSpotifyCardBody" class="card-body" hidden="@(!Model.IsViewingOwnProfile)">
                 <a class="btn btn-outline-secondary btn-outline-spotify border-0 shadow-none w-50" style="padding-top: 0.75em; padding-bottom: 0.75em; margin-top: 25%;">
                     <div class="spinner-border spinner-border-sm" role="status" hidden></div>
@@ -35,21 +35,16 @@
                 </a>
             </div>
 
-            <!-- Other users visiting page -->
+            @* Other users visiting page *@
 
-            <!-- User signed in and has spotify profile showing -->
+            @* User signed in and has spotify profile showing *@
             <div id="UserAuthedSpotifyCardBody" class="card-body" hidden="@(Model.IsViewingOwnProfile)">
                 <img src="https://placekitten.com/200" class="card-img-top border border-2" style="border-radius: 50%; width: 30%;">
-                <h3 class="card-title">@Model.UserProfile?.Username</h3>
+                <h3 class="card-title">@Model.SpotifyProfile?.SpotifyUsername</h3>
 
                 <br />
 
-                <p class="card-text">
-                    I really like listening to music on spotify, Especially new music which you can add to my queue!
-                    This description might get quite long and the card should already be big enough to handle it.
-                </p>
-
-                <br />
+                @* Recent so *@
 
                 <a href="#" class="btn btn-outline-success">Spotify something button :)</a>
             </div>

@@ -1,8 +1,9 @@
 ﻿using AddToMyQueue.Api.Extensions;
+using AddToMyQueue.Data;
+using AddToMyQueue.Data.Models.Spotify;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace AddToMyQueue.Api.Models
 {
@@ -10,7 +11,6 @@ namespace AddToMyQueue.Api.Models
     {
         private readonly HttpClient _httpClient;
         private readonly SpotifyApiData _apiData;
-
         private string _state;
 
         private string? refreshToken;
@@ -40,6 +40,7 @@ namespace AddToMyQueue.Api.Models
 
         public async Task GetAccessToken(string code)
         {
+            
             var postContent = new FormUrlEncodedContent(new[] {
                 new KeyValuePair<string, string>("code", code), new KeyValuePair<string, string>("redirect_uri", _apiData.RedirectUrl), new KeyValuePair<string, string>("grant_type", "authorization_code")
             });
@@ -92,6 +93,45 @@ namespace AddToMyQueue.Api.Models
 
             var response = await _httpClient.PostAsync(url, postContent);
             return await response.Content.ReadAsStringAsync();
+        }
+
+        public async Task GetDetails()
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _apiData.AuthHeader);
+            string url = _apiData.ApiBaseUrl + "/me";
+
+            var response = await _httpClient.GetAsync(url);
+        }
+
+        public async Task SaveClientToDb(AddToMyQueueContext context, string userId)
+        {
+            if (refreshToken == null)
+                return;
+
+            var user = await context.Users.Where(u => u.UserId == userId).FirstOrDefaultAsync();
+            var userSpotifyAccount = await context.UserSpotifyAccounts.Where(u => u.UserId == userId).FirstOrDefaultAsync();
+
+            if (user == null || userSpotifyAccount != null)
+                return;
+            
+
+            var spotifyId = Guid.NewGuid().ToString();
+
+            var spotifyAcc = new SpotifyAccount()
+            {
+                SpotifyId = spotifyId,
+                RefreshToken = refreshToken,
+            };
+            await context.SpotifyAccounts.AddAsync(spotifyAcc).AsTask();
+
+            var userSpotifyAcc = new UserSpotifyAccount()
+            {
+                UserId = userId,
+                SpotifyId = spotifyId
+            };
+            await context.UserSpotifyAccounts.AddAsync(userSpotifyAcc).AsTask();
+
+            await context.SaveChangesAsync();
         }
     }
 }

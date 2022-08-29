@@ -1,5 +1,6 @@
 using AddToMyQueue.Api.Extensions;
 using AddToMyQueue.Api.Models;
+using AddToMyQueue.Data;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AddToMyQueue.Web.Pages
@@ -8,18 +9,19 @@ namespace AddToMyQueue.Web.Pages
     {
         private readonly ILogger _logger;
         private readonly SpotifyClients _spotifyClients;
-
+        private readonly AddToMyQueueContext _context;
         private string _code;
         private string _receivedState;
         private string _error;
 
-        public CallbackModel(/*ILogger logger,*/ SpotifyClients spotifyClients)
+        public CallbackModel(/*ILogger logger,*/ SpotifyClients spotifyClients, AddToMyQueueContext context)
         {
             //_logger = logger;
             _spotifyClients = spotifyClients;
+            _context = context;
         }
 
-        public async void OnGet()
+        public async Task OnGet()
         {
             var userId = "1"; //GetLoggedInUser();
 
@@ -34,10 +36,9 @@ namespace AddToMyQueue.Web.Pages
             _receivedState = Request.Query["state"];
             _error = Request.Query["error"];
 
-            Response.Redirect("/index");
 
-            var client = _spotifyClients.GetClient(userId);
-            if (client == null || client.accessToken != null)
+            var client = _spotifyClients.TryGetClient(userId);
+            if (client == null || client.accessToken != null) // access token part is temp code for single user
             {
                 // Either redirect to /index or show a "Authentication failed, try again later" message.
                 Response.Redirect("/index");
@@ -58,7 +59,9 @@ namespace AddToMyQueue.Web.Pages
                 return;
             }
 
-            await client.GetAccessToken(_code);
+            await client.GetAccessToken(_code); // Must complete, before saving.
+            await client.SaveClientToDb(_context, userId);
+            Response.Redirect("/index");
         }
     }
 }

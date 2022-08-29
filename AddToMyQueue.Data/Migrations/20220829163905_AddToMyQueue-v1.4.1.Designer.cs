@@ -2,6 +2,7 @@
 using AddToMyQueue.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AddToMyQueue.Data.Migrations
 {
     [DbContext(typeof(AddToMyQueueContext))]
-    partial class AddToMyQueueContextModelSnapshot : ModelSnapshot
+    [Migration("20220829163905_AddToMyQueue-v1.4.1")]
+    partial class AddToMyQueuev141
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,6 +47,7 @@ namespace AddToMyQueue.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("SpotifyUsername")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("SpotifyId");

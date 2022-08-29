@@ -1,7 +1,5 @@
 using AddToMyQueue.Api.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Net.Http.Headers;
 
 namespace AddToMyQueue.Web.Pages
 {
@@ -17,15 +15,15 @@ namespace AddToMyQueue.Web.Pages
             //_logger = logger;
             _spotifyClients = spotifyClients;
             _apiData = apiData;
+
             _httpClient = new HttpClient();
         }
 
         public void OnGet()
         {
-            
             var userId = "1"; //GetLoggedInUser();
 
-            var client = _spotifyClients.GetClient(userId);
+            var client = _spotifyClients.TryGetClient(userId);
             if (client == null)
             {
                 client = new SpotifyClient(_httpClient, _apiData);
@@ -38,7 +36,6 @@ namespace AddToMyQueue.Web.Pages
                 Response.Redirect("/index");
                 return;
             }
-
             
             Response.Redirect(client.GetAuthUrl());
         }
