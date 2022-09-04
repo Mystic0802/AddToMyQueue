@@ -40,9 +40,10 @@ namespace AddToMyQueue.Api.Models
 
         public async Task GetAccessToken(string code)
         {
-            
-            var postContent = new FormUrlEncodedContent(new[] {
-                new KeyValuePair<string, string>("code", code), new KeyValuePair<string, string>("redirect_uri", _apiData.RedirectUrl), new KeyValuePair<string, string>("grant_type", "authorization_code")
+            var postContent = new FormUrlEncodedContent(new Dictionary<string,string>() {
+                ["code"] = code ,
+                ["redirect_uri"] = _apiData.RedirectUrl,
+                ["grant_type"] = "authorization_code"
             });
 
             var anonObj = new
@@ -67,8 +68,9 @@ namespace AddToMyQueue.Api.Models
             if (refreshToken == null)
                 return;
 
-            var postContent = new FormUrlEncodedContent(new[] {
-                new KeyValuePair<string, string>("refresh_token", refreshToken), new KeyValuePair<string, string>("grant_type", "refresh_token")
+            var postContent = new FormUrlEncodedContent(new Dictionary<string, string>() {
+                ["refresh_token"] = refreshToken,
+                ["grant_type"] = "refresh_token"
             });
 
             var anonObj = new

@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AddToMyQueue.Data.Migrations
 {
     [DbContext(typeof(AddToMyQueueContext))]
-    [Migration("20220829163905_AddToMyQueue-v1.4.1")]
-    partial class AddToMyQueuev141
+    [Migration("20220904175026_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,7 +47,6 @@ namespace AddToMyQueue.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("SpotifyUsername")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("SpotifyId");

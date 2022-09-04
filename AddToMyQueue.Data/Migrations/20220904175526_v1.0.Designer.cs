@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AddToMyQueue.Data.Migrations
 {
     [DbContext(typeof(AddToMyQueueContext))]
-    [Migration("20220829164221_AddToMyQueue-v1.4.2")]
-    partial class AddToMyQueuev142
+    [Migration("20220904175526_v1.0")]
+    partial class v10
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

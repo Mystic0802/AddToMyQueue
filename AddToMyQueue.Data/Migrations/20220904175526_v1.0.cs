@@ -1,24 +1,32 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace AddToMyQueue.Data.Migrations
 {
-    public partial class AddToMyQueuev12 : Migration
+    public partial class v10 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "SpotifyUsers");
+            migrationBuilder.CreateTable(
+                name: "RecentAddedSongs",
+                columns: table => new
+                {
+                    SpotifyId = table.Column<string>(type: "text", nullable: false),
+                    SongUri = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecentAddedSongs", x => x.SpotifyId);
+                });
 
             migrationBuilder.CreateTable(
                 name: "SpotifyAccounts",
                 columns: table => new
                 {
                     SpotifyId = table.Column<string>(type: "text", nullable: false),
-                    RefreshToken = table.Column<string>(type: "text", nullable: false),
-                    TokenCreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    SpotifyUsername = table.Column<string>(type: "text", nullable: true),
+                    RefreshToken = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,6 +61,9 @@ namespace AddToMyQueue.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "RecentAddedSongs");
+
+            migrationBuilder.DropTable(
                 name: "SpotifyAccounts");
 
             migrationBuilder.DropTable(
@@ -60,20 +71,6 @@ namespace AddToMyQueue.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserSpotifyAccounts");
-
-            migrationBuilder.CreateTable(
-                name: "SpotifyUsers",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    RefreshToken = table.Column<string>(type: "text", nullable: false),
-                    TokenCreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UserGuid = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SpotifyUsers", x => x.UserId);
-                });
         }
     }
 }
